@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "username": "Bekzodbek",
+        "email": "bekzodbek@gmail.com",
+        "password": "a534db3dc61f32e74e9e9097a430e50c19e60b2c590ad1b5171c5ec43403f7b6"
+    },
+    {
+        "id": 2,
+        "username": "Sherbek",
+        "email": "sherbek@gmail.com",
+        "password": "9ff89864c4780e5dc60cc552898aef09c3d7d970a83dfe7d5e8690e43ef0c5c9"
+    },
+    {
+        "id": 3,
+        "username": "dior",
+        "email": "dior@gmail.com",
+        "password": "595913d68469765be5937323a4d05c53193ace2f6ccc2cf9eabc9bc68b5dabef"
+    }
+]
