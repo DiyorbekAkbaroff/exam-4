@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1752346076437,
+        "userId": 3,
+        "items": [
+            {
+                "orderId": 7,
+                "user_Id": 3,
+                "product_Id": 5,
+                "count": 7,
+                "product": {
+                    "id": 5,
+                    "name": "Televisor",
+                    "price": 1000,
+                    "image": "/assets/images/televisor.jpg"
+                }
+            }
+        ],
+        "totalAmount": 7000,
+        "deliveryFee": 5,
+        "finalAmount": 7005,
+        "customerInfo": {
+            "fullName": "dior",
+            "phone": "+998936885677",
+            "address": "Samarkand Viloyati",
+            "comment": "asasas"
+        },
+        "paymentMethod": "cash",
+        "status": "pending",
+        "createdAt": "2025-07-12T18:47:56.438Z",
+        "orderNumber": "ORD-1752346076438"
+    }
+]

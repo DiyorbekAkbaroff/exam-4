@@ -1,0 +1,97 @@
+<section class="payment-section">
+    <div class="container">
+        <div class="payment-wrapper">
+            <div class="payment-header">
+                <h2>To'lov ma'lumotlari</h2>
+                <p>Mahsulotni sotib olish uchun to'lov ma'lumotlarini kiriting</p>
+            </div>
+            
+            <div class="order-summary">
+                <h3>Buyurtma xulosasi</h3>
+                <div class="order-items">
+                    <% orderItems.forEach(function(item) { %>
+                        <div class="order-item" data-product-id="<%= item.product_Id %>">
+                            <img src="<%= item.product.image %>" alt="<%= item.product.name %>" class="item-image">
+                            <div class="item-details">
+                                <h4><%= item.product.name %></h4>
+                                <p class="item-price">$<%= item.product.price.toLocaleString() %></p>
+                                <div class="quantity-controls">
+                                    <label>Miqdori:</label>
+                                    <div class="quantity-input">
+                                        <button class="quantity-btn" onclick="changeQuantity(<%= item.product_Id %>, -1)">-</button>
+                                        <input type="number" class="quantity-field" value="<%= item.count %>" min="1" max="10" onchange="updateQuantity(<%= item.product_Id %>, this.value)">
+                                        <button class="quantity-btn" onclick="changeQuantity(<%= item.product_Id %>, 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-total" id="total-<%= item.product_Id %>">
+                                $<%= (item.product.price * item.count).toLocaleString() %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+                
+                <div class="order-total">
+                    <div class="total-row">
+                        <span>Mahsulot narxi:</span>
+                        <span id="subtotal">$<%= totalAmount.toLocaleString() %></span>
+                    </div>
+                    <div class="total-row">
+                        <span>Yetkazib berish:</span>
+                        <span>$5.00</span>
+                    </div>
+                    <div class="total-row final-total">
+                        <span>To'lov summa:</span>
+                        <span id="final-total">$<%= (totalAmount + 5).toLocaleString() %></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-form">
+                <h3>To'lov usuli</h3>
+                <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="cash" checked>
+                        <span class="method-icon">💵</span>
+                        <span class="method-text">Naqd pul bilan to'lov</span>
+                    </label>
+                </div>
+                
+                <div class="delivery-info">
+                    <h3>Yetkazib berish ma'lumotlari</h3>
+                    <div class="form-group">
+                        <label for="fullName">To'liq ism</label>
+                        <input type="text" id="fullName" name="fullName" value="<%= user.username %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefon raqam</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+998 XX XXX XX XX" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Manzil</label>
+                        <textarea id="address" name="address" placeholder="To'liq manzilni kiriting..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment">Izoh (ixtiyoriy)</label>
+                        <textarea id="comment" name="comment" placeholder="Qo'shimcha ma'lumotlar..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="payment-actions">
+                    <button type="button" class="btn btn-outline" onclick="history.back()">Orqaga</button>
+                    <button type="submit" class="btn btn-primary" onclick="processPayment()">
+                        <span class="btn-text">Buyurtmani tasdiqlash</span>
+                        <span class="btn-loading" style="display: none;">
+                            <div class="loading"></div>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/js/payment.js"></script> 

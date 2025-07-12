@@ -1,0 +1,19 @@
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to MyStore</h1>
+        <p>Discover amazing products at unbeatable prices. Shop the latest trends and find your perfect match.</p>
+    </div>
+</section>
+
+<section class="container">
+    <div class="section-header">
+        <h2>Featured Products</h2>
+        <p>Explore our curated collection of premium products</p>
+    </div>
+    
+    <div class="products-grid">
+        <% products.forEach(function(product){ %>
+            <%- include('../partials/productCard', { product: product }) %>
+        <% }) %>
+    </div>
+</section>

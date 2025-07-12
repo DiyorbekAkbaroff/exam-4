@@ -1,27 +1,23 @@
-<div class="col mb-5">
-    <div class="card h-100">
-        <!-- Product image-->
-        <img class="card-img-top" width="450" height="300" src="<%=product.image %>" alt="..." />
-        <!-- Product details-->
-        <div class="card-body p-4">
-            <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder"><%=product.name %></h5>
-                <!-- Product reviews-->
-                <div class="d-flex justify-content-center small text-warning mb-2">
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                    <div class="bi-star-fill"></div>
-                </div>
-                <!-- Product price-->
-                <%=product.price %>
-            </div>
-        </div>
-        <!-- Product actions-->
-        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+<div class="product-card" data-product-id="<%= product.id %>">
+    <div class="product-image-container">
+        <img src="<%= product.image %>" alt="<%= product.name %>" class="product-img" />
+        <% if (user) { %>
+            <button class="bookmark-btn" onclick="toggleBookmark(<%= product.id %>)" data-product-id="<%= product.id %>">
+                <span class="bookmark-icon">🤍</span>
+            </button>
+        <% } %>
+    </div>
+    
+    <div class="product-body">
+        <h3 class="product-name"><%= product.name %></h3>
+        <p class="product-price">$<%= product.price.toLocaleString() %></p>
+        
+        <div class="product-actions">
+            <% if (user) { %>
+                <button class="btn btn-primary" onclick="buyNow(<%= product.id %>)">Hozir sotib olish</button>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary">Kirish va sotib olish</a>
+            <% } %>
         </div>
     </div>
 </div>

@@ -1,0 +1,35 @@
+<header class="navbar">
+    <div class="nav-wrapper">
+        <a href="/" class="brand">MyStore</a>
+        <nav>
+            <a href="/">Home</a>
+            <% if (user) { %>
+                <a href="/profile">Profile</a>
+                <a href="/bookmarks">Bookmarks</a>
+                <button id="logoutBtn" class="link">Logout</button>
+            <% } else { %>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            <% } %>
+        </nav>
+    </div>
+</header>
+
+<script>
+document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            window.location.href = '/';
+        }
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+});
+</script>

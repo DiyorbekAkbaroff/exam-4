@@ -16,7 +16,17 @@ export default {
             newUser = {id: users.length ? users.at(-1).id + 1: 1, ...newUser, password: sha256(newUser.password)};
             users.push(newUser)
             await req.writeFile("users", users);
-            return res.status(201).json({message: "User successfullu registered !", status: 201, accessToken: jwtService.createToken({user_id: newUser.id, userAgent: req.headers["user-agent"]})})
+            
+            const token = jwtService.createToken({user_id: newUser.id, userAgent: req.headers["user-agent"]});
+            
+            // Set cookie
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 20 * 24 * 60 * 60 * 1000 // 20 days
+            });
+            
+            return res.status(201).json({message: "User successfully registered !", status: 201, accessToken: token})
         }catch(err){
             return globalError(err, res);
         }
@@ -29,9 +39,23 @@ export default {
             let findUser = users.find((user) => user.email == userData.email);
             if(!findUser) throw new ClientError("User unauthorized", 401)
             if(!(findUser.password == sha256(userData.password))) throw new ClientError("User unauthorized", 401);
-            return res.json({message: "User successfullu logined !", status: 200, accessToken: jwtService.createToken({user_id: findUser.id, userAgent: req.headers["user-agent"]})})
+            
+            const token = jwtService.createToken({user_id: findUser.id, userAgent: req.headers["user-agent"]});
+            
+            // Set cookie
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 20 * 24 * 60 * 60 * 1000 // 20 days
+            });
+            
+            return res.json({message: "User successfully logged in !", status: 200, accessToken: token})
         }catch(err){
             return globalError(err, res);
         }
+    },
+    async LOGOUT(req, res) {
+        res.clearCookie('token');
+        return res.json({ message: "Logged out successfully", status: 200 });
     }
 }

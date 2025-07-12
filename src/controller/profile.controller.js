@@ -1,34 +1,37 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { ClientError } from "shokhijakhon-error-handler";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export async function getProfile(req, res) {
+  try {
+    const users = await req.readFile("users");
+    const user = users.find(u => u.id == req.params.id);
+    
+    if (!user) {
+      throw new ClientError("User not found", 404);
+    }
 
-const file = path.join(__dirname, '../db/users.json');
-
-function readUsers() {
-  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : [];
+    const { password, ...userWithoutPassword } = user;
+    res.json(userWithoutPassword);
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message });
+  }
 }
 
-function writeUsers(data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
-}
+export async function updateProfile(req, res) {
+  try {
+    let users = await req.readFile("users");
+    let idx = users.findIndex(u => u.id == req.params.id);
 
-export function getProfile(req, res) {
-  const user = readUsers().find(u => u.id == req.params.id);
-  res.json(user || {});
-}
+    if (idx === -1) {
+      throw new ClientError("User not found", 404);
+    }
 
-export function updateProfile(req, res) {
-  let users = readUsers();
-  let idx = users.findIndex(u => u.id == req.params.id);
-
-  if (idx !== -1) {
-    users[idx] = { ...users[idx], ...req.body };
-    writeUsers(users);
-    res.json({ message: 'Profile updated' });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+    // Update user data (excluding password)
+    const { password, ...updateData } = req.body;
+    users[idx] = { ...users[idx], ...updateData };
+    
+    await req.writeFile("users", users);
+    res.json({ message: 'Profile updated successfully' });
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message });
   }
 }
